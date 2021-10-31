@@ -4,18 +4,7 @@ from django.db import models
 from accountant.models import Client,Vendor
 
 
-class EmployeeBaseModel(models.Model):
-    organization_code = models.CharField(max_length=100)
-    status = models.BooleanField(default=True)
-    created_date = models.DateTimeField(auto_now=True)
-    modified_date = models.DateTimeField(auto_now_add=True)
-    remarks = models.CharField(max_length=400, blank=True, null=True)
-
-    class Meta:
-        abstract = True
-
-
-class ProjectEmployee(EmployeeBaseModel):
+class ProjectEmployee(models.Model):
     timesheet_type_choices = (
         ('weekly', 'weekly'),
         ('biweekly', 'biweekly'),
@@ -23,18 +12,22 @@ class ProjectEmployee(EmployeeBaseModel):
     )
     user_code = models.CharField(max_length=100)
     employee_name = models.CharField(max_length=100)
-    start_date = models.DateField(auto_now=True)
+    start_date = models.DateField()
     end_date = models.DateField(blank=True, null=True) 
     client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, blank=True)
     vendor = models.ForeignKey(Vendor, on_delete=models.SET_NULL, null=True, blank=True)
     max_hours_per_week = models.IntegerField()
     timesheet_type = models.CharField(choices=timesheet_type_choices, max_length=30)
+    organization_code = models.CharField(max_length=100)
+    status = models.BooleanField(default=True)
+    created_date = models.DateTimeField(auto_now=True)
+    modified_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{}".format(self.employee_name)
 
 
-class TimeSheetSet(EmployeeBaseModel):
+class TimeSheetSet(models.Model):
     timesheet_status_choices = (
         ('saved', 'saved'),
         ('submitted', 'submitted'),

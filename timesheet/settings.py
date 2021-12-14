@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django_filters',
     'accountant',
     'employee',
-    'apidocument'
+    'apidocument',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
